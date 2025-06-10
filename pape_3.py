@@ -2,7 +2,7 @@ import streamlit as st
 from utils.visualize import compare_actual_vs_predicted
 
 def show_comparison():
-    st.header("🔍 실제 생존 vs 예측 생존 비교")
+    st.header("실제 생존 vs 예측 생존 비교")
 
     train = st.session_state.get("train")
     test_merged = st.session_state.get("test_merged")

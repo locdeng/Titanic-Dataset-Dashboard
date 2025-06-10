@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 """test.csv와 gender_submission.csv를 병합하여
    예측된 생존 여부를 포함하는 테스트 데이터셋을 생성합니다.
 """

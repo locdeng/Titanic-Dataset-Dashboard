@@ -2,24 +2,26 @@ import matplotlib.pyplot as plt
 import seaborn as sns 
 import pandas as pd
 
+plt.rcParams['font.family'] = 'DejaVu Sans'
+
 def survival_by_gender(df, title="Survival by Gender"):
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.countplot(data=df, x='Sex', hue='Survived', palette='Set2', ax=ax)
     ax.set_title(title)
-    ax.set_xlabel("성별")
-    ax.set_ylabel("인원 수")
-    ax.legend(title='생존 여부', labels=['사망', '생존'])
+    ax.set_xlabel("Sex")
+    ax.set_ylabel("Number of People")
+    ax.legend(title='Survival Status', labels=['Death', 'Servived'])
     return fig
 
 def survival_by_age(df, survived = True):
     label = 1 if survived else 0
-    title = "생존자 나이 분포" if survived else "사망자 나이 분포"
+    title = "Age Distribution of Survivor" if survived else "Age Distribution of the Deceased"
     subset = df[df['Survived'] == label]['Age'].dropna()
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.histplot(subset, kde=True, bins=30, ax=ax)
     ax.set_title(title)
-    ax.set_xlabel("나이")
-    ax.set_ylabel("빈도")
+    ax.set_xlabel("Age")
+    ax.set_ylabel("Frequency")
     return fig
 
 def compare_actual_vs_predicted(train_df, test_df):
@@ -35,9 +37,9 @@ def compare_actual_vs_predicted(train_df, test_df):
     fig, ax = plt.subplots(figsize=(9, 5))
     sns.countplot(data=combined, x='Sex', hue='Survived', palette='Set2', ax=ax)
     ax.set_title("Actual vs Predicted Survival by Gender")
-    ax.set_xlabel("성별")
-    ax.set_ylabel("인원 수")
-    ax.legend(title='생존 여부', labels=['사망', '생존'])
+    ax.set_xlabel("Sex")
+    ax.set_ylabel("Number of People")
+    ax.legend(title='Survial Status', labels=['Death', 'Survived'])
     return fig
     
     
