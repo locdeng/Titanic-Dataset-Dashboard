@@ -21,18 +21,24 @@ def show_overview():
 
     # 데이터 불러오기
     train = st.session_state.get("train")
-    # test = st.session_state.get("test")
-    # gender = st.session_state.get("gender")
+    test = st.session_state.get("test")
+    gender = st.session_state.get("gender")
     test_merged = st.session_state.get("test_merged")
 
     # 탭 생성
-    tabs = st.tabs(["Train 데이터", "Test + Prediction 데이터"])
+    tabs = st.tabs(["Train 데이터", "Test 데이터","Gender_Submission 데이터터", " Test + Gender_Submission 데이터"])
 
     with tabs[0]:
-        st.subheader("🚂 Train (Actual) 데이터")
+        # st.subheader("🚂 Train (Actual) 데이터")
         st.dataframe(train)
-
+    
     with tabs[1]:
-        st.subheader("🔮 Test (Predicted) 데이터")
+        st.dataframe(test)
+        
+    with tabs[2]:
+        st.dataframe(gender)
+
+    with tabs[3]:
+        # st.subheader("🔮 Test (Predicted) 데이터")
         st.dataframe(test_merged)
 

@@ -10,7 +10,7 @@ def survival_by_gender(df, title="Survival by Gender"):
     ax.set_title(title)
     ax.set_xlabel("Sex")
     ax.set_ylabel("Number of People")
-    ax.legend(title='Survival Status', labels=['Death', 'Servived'])
+    ax.legend(title='Survival Status', labels=['Death', 'Survived'])
     return fig
 
 def survival_by_age(df, survived = True):

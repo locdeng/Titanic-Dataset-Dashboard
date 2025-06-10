@@ -5,7 +5,7 @@ from streamlit_option_menu import option_menu
 
 
 def train_analysis():
-    # st.header("생존 분석 (Train 데이터 기반)")
+    st.header("Train 데이터 기반으로 실제 생존 분석석")
 
     train = st.session_state.get("train")
 
@@ -34,7 +34,7 @@ def train_analysis():
         st.warning("Train 데이터를 불러올 수 없습니다. main.py에서 세션 상태를 확인하세요.")
         
 def test_analysis():
-    # st.header("생존 분석 (test + gender_submission  데이터 기반)")
+    st.header("test + gender_submission  데이터 기반으로 이용해서 예측 생존 분석석")
 
     merged_test = st.session_state.get("test_merged")
 
@@ -63,32 +63,32 @@ def test_analysis():
         st.warning("Train 데이터를 불러올 수 없습니다. main.py에서 세션 상태를 확인하세요.")
 
 def analysis_home():
-    st.header("생존 분석")
+    # st.header("생존 분석")
     selected = option_menu(
         None,
-        ["train 데이터 기반", "test + gender_submission  데이터 기반"],
+        ["실제 생존 결과", "예측 생존 결과"],
         # icons=["house", "bar-chart", "file-spreadsheet", "map"],
         # menu_icon="cast",
         default_index=0,
         orientation="horizontal",
-        # styles={
-        #     "container": {
-        #         "padding": "0!important",
-        #         "background-color": "#fafafa",
-        #     },  # fafafa #6F92F7
-        #     "icon": {"color": "orange", "font-size": "25px"},
-        #     "nav-link": {
-        #         "font-size": "18px",
-        #         "text-align": "left",
-        #         "margin": "0px",
-        #         "--hover-color": "#eee",
-        #     },
-        #     "nav-link-selected": {"background-color": "green"},
-        # },
+        styles={
+            "container": {
+                "padding": "0!important",
+                "background-color": "#fafafa",
+            },  # fafafa #6F92F7
+            "icon": {"color": "orange", "font-size": "25px"},
+            "nav-link": {
+                "font-size": "18px",
+                "text-align": "left",
+                "margin": "0px",
+                "--hover-color": "#eee",
+            },
+            "nav-link-selected": {"background-color": "green"},
+        },
     )
 
-    if selected == "train 데이터 기반":
+    if selected == "실제 생존 결과":
         train_analysis()
-    elif selected == "test + gender_submission  데이터 기반":
+    elif selected == "예측 생존 결과":
         test_analysis()
     
