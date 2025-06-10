@@ -7,6 +7,6 @@ import streamlit as st
 def load_data():
     train = pd.read_csv("dataset/train.csv")
     test = pd.read_csv("dataset/test.csv")
-    gender = pd.read_csv("dataset/gender_submisson.csv")
+    gender = pd.read_csv("dataset/gender_submission.csv")
     
     return train, test, gender
