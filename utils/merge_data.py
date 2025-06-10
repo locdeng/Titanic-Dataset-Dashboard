@@ -8,7 +8,7 @@ import pandas as pd
 def merge_test(test_df, gender_df):
     
     merged_test = test_df.merge(gender_df, on="PassengerId", how="left")
-    merged_test.rename(columns={'Survived': 'PredictedSurvived'}, inplace=True)
+    # merged_test.rename(columns={'Survived': 'PredictedSurvived'}, inplace=True)
     merged_test["Set"] = 'Predicted Data'
     
     return merged_test

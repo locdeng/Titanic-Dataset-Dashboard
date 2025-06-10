@@ -28,8 +28,8 @@ def compare_actual_vs_predicted(train_df, test_df):
     train_copy = train_df[['PassengerId', 'Sex', 'Survived']].copy()
     train_copy['Set'] = 'Train (Actual)'
 
-    test_copy = test_df[['PassengerId', 'Sex', 'PredictedSurvived']].copy()
-    test_copy.rename(columns={'PredictedSurvived': 'Survived'}, inplace=True)
+    test_copy = test_df[['PassengerId', 'Sex', 'Survived']].copy()
+    # test_copy.rename(columns={'PredictedSurvived': 'Survived'}, inplace=True)
     test_copy['Set'] = 'Test (Predicted)'
 
     combined = pd.concat([train_copy, test_copy], ignore_index=True)

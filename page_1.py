@@ -21,8 +21,8 @@ def show_overview():
 
     # 데이터 불러오기
     train = st.session_state.get("train")
-    test = st.session_state.get("test")
-    gender = st.session_state.get("gender")
+    # test = st.session_state.get("test")
+    # gender = st.session_state.get("gender")
     test_merged = st.session_state.get("test_merged")
 
     # 탭 생성
