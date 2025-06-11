@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
 import seaborn as sns 
 import pandas as pd
 
@@ -13,15 +14,18 @@ def survival_by_gender(df, title="Survival by Gender"):
     ax.legend(title='Survival Status', labels=['Death', 'Survived'])
     return fig
 
-def survival_by_age(df, survived = True):
+def survival_by_age(df, survived = True, age_range=(0,80)):
     label = 1 if survived else 0
-    title = "Age Distribution of Survivor" if survived else "Age Distribution of the Deceased"
-    subset = df[df['Survived'] == label]['Age'].dropna()
+    title = "KDE of Survivor Age Distribution" if survived else "KDE of Deceased Age Distribution"
+    subset = df[(df['Survived'] == label) & (df['Age'].notna())]
+    subset = subset[(subset['Age'] >= age_range[0]) & (subset['Age'] <= age_range[1])]
+    
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.histplot(subset, kde=True, bins=30, ax=ax)
+    sns.kdeplot(subset["Age"], ax=ax, fill=True,color="Steelblue")
     ax.set_title(title)
     ax.set_xlabel("Age")
-    ax.set_ylabel("Frequency")
+    ax.set_ylabel("Percentage of Density")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=1))
     return fig
 
 def compare_actual_vs_predicted(train_df, test_df):
@@ -42,7 +46,25 @@ def compare_actual_vs_predicted(train_df, test_df):
     ax.legend(title='Survial Status', labels=['Death', 'Survived'])
     return fig
     
-    
+def plot_survival_rate_by_age(df, min_samples=5):
+    df = df[df['Age'].notna()]  
+    grouped = df.groupby('Age').agg(
+        survival_rate=('Survived', 'mean'),
+        count=('Survived', 'size')
+    ).reset_index()
+
+    grouped = grouped[grouped['count'] >= min_samples]
+
+    fig, ax = plt.subplots(figsize=(9, 5))
+    sns.lineplot(data=grouped, x='Age', y='survival_rate', ax=ax, marker='o')
+
+    ax.set_title("Rate of Survivor Age Distribution")
+    ax.set_xlabel("Age")
+    ax.set_ylabel("Rate (%)")
+    ax.set_ylim(0, 1)
+    ax.yaxis.set_major_formatter(plt.matplotlib.ticker.PercentFormatter(xmax=1, decimals=0))
+
+    return fig    
     
     
     
