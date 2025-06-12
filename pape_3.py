@@ -63,7 +63,6 @@ def show_model_prediction():
     ])
 
     with tabs[0]:
-        st.subheader("📊 모델 성능 평가")
         st.markdown("🎯 정확도 (Accuracy)")
         st.markdown("정확도는 전체 샘플 중 올바르게 예측한 비율입니다.")
         fig = go.Figure(go.Indicator(
@@ -108,7 +107,7 @@ def show_model_prediction():
 
     
     with tabs[1]:
-        st.subheader("🔍 Confusion Matrix")
+
         st.markdown("""
         혼동 행렬(Confusion Matrix)은 모델이 실제 값을 얼마나 잘 예측했는지를 시각적으로 보여줍니다.  
         - 좌측 축은 **실제 클래스**, 상단 축은 **예측 클래스**입니다.
@@ -129,7 +128,7 @@ def show_model_prediction():
 
    
     with tabs[2]:
-        st.subheader("🌲 랜덤 포레스트 특성 중요도")
+        
         st.markdown("""
         각 특성이 예측 결과에 얼마나 기여했는지를 나타냅니다.  
         - 높은 값일수록 해당 특성이 중요한 역할을 합니다.
@@ -139,7 +138,7 @@ def show_model_prediction():
 
     
     with tabs[3]:
-        st.subheader("📤 테스트 데이터 생존 예측 결과")
+       
         st.markdown("""
         아래는 테스트 데이터에 대해 예측된 생존 여부입니다.  
         원본 정보와 함께 `Survived` 예측값이 삽입되어 있습니다.
