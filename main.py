@@ -9,7 +9,7 @@ from page_4 import show_data
 
 
 def main():
-    st.title("🚢 Titanic Dataset Explorer")
+    # st.title("🚢 Titanic Dataset Explorer")
 
     # Load and prepare data
     train_raw, test_raw = load_data()
@@ -24,7 +24,7 @@ def main():
     with st.sidebar:
         selected = option_menu(
             menu_title="대시보드 메뉴",
-            options=["데이터 개요", "Train 데이터 분석", "예측 모델 및 평가가", "데이터 보기"],
+            options=["데이터 개요", "Train 데이터 분석", "예측 모델 및 평가가", "원본 데이터 보기"],
             icons=["table", "bar-chart", "activity"],
             default_index=0
         )
@@ -36,7 +36,7 @@ def main():
         train_analysis()
     elif selected == "예측 모델 및 평가가":
         show_model_prediction()
-    elif selected == "데이터 보기":
+    elif selected == "원본 데이터 보기":
         show_data()
         
 if __name__ == "__main__":

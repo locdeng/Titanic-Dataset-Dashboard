@@ -1,6 +1,8 @@
 import streamlit as st
 
 def show_overview(): 
+    st.title("🚢 Titanic Dataset Explorer")
+    
     st.subheader("데이터 개요")
 
     train = st.session_state.get("train")
@@ -43,7 +45,5 @@ def show_overview():
         for sex, count in sex_counts.items():
             st.write(f"{sex.capitalize()}: {count} 명")
 
-# st.divider()
-# st.markdown("### 🧾 데이터 샘플")
-# st.dataframe(train.head(20))
+
 

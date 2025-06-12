@@ -13,7 +13,7 @@ def survival_by_gender(df, title="Survival by Gender"):
     sns.countplot(data=df, x='Sex', hue='Survived', palette='Set2', ax=ax)
     ax.set_title(title)
     ax.set_xlabel("성별")
-    ax.set_ylabel("인원 수수")
+    ax.set_ylabel("인원 수")
     ax.legend(title='Survival Status', labels=['Death', 'Survived'])
     return fig
 
@@ -27,7 +27,7 @@ def survival_by_age(df, survived = True, age_range=(0,80)):
     sns.kdeplot(subset["Age"], ax=ax, fill=True,color="Steelblue")
     ax.set_title(title)
     ax.set_xlabel("나이")
-    ax.set_ylabel("빈도도")
+    ax.set_ylabel("빈도")
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=1))
     return fig
 
@@ -49,81 +49,6 @@ def compare_actual_vs_predicted(train_df, test_df):
     ax.legend(title='Survial Status', labels=['사망', '생존존'])
     return fig
     
-# def plot_survival_rate_by_age(df, min_samples=5):
-#     df = df[df['Age'].notna()]  
-#     grouped = df.groupby('Age').agg(
-#         survival_rate=('Survived', 'mean'),
-#         count=('Survived', 'size')
-#     ).reset_index()
-
-#     grouped = grouped[grouped['count'] >= min_samples]
-
-#     fig, ax = plt.subplots(figsize=(9, 5))
-#     sns.lineplot(data=grouped, x='Age', y='survival_rate', ax=ax, marker='o')
-
-#     ax.set_title("Rate of Survivor Age Distribution")
-#     ax.set_xlabel("Age")
-#     ax.set_ylabel("Rate (%)")
-#     ax.set_ylim(0, 1)
-#     ax.yaxis.set_major_formatter(plt.matplotlib.ticker.PercentFormatter(xmax=1, decimals=0))
-
-#     return fig    
-
-# def plot_survival_pie(train):
-#     train = train[train['Age'].notna()]
-#     train['AgeGroup'] = pd.cut(train['Age'], bins=[0,10,20,30,40,50,60,70,80], labels=[
-#         "0-10","11-20","21-30","31-40","41-50","51-60","61-70","71-80"])
-    
-#     colors = [
-#     "#FFD700",  # 0-10 
-#     "#00B894",  # 11-20 
-#     "#00CEC9",  # 21-30 
-#     "#0984E3",  # 31-40 
-#     "#6C5CE7",  # 41-50 
-#     "#E17055",  # 51-60 
-#     "#D63031",  # 61-70 
-#     "#636E72",  # 71-80 
-#     ]
-
-
-#     age_survival = train.groupby('AgeGroup')['Survived'].mean() * 100
-#     labels = age_survival.index
-#     values = age_survival.values
-    
-
-#     fig, ax = plt.subplots(figsize=(6, 6))
-#     wedges, texts, autotexts = ax.pie(
-#         values,
-#         labels=None,
-#         autopct='%1.1f%%',
-#         startangle=90,
-#         wedgeprops=dict(width=0.4, edgecolor='white'),
-#         colors=colors,
-#         textprops=dict(fontsize=11, fontweight='bold', color='black'),
-#         labeldistance=1.5,      # 🔧 đẩy nhãn ra xa
-            
-#     )
-    
-#     for autotext in autotexts:
-#         autotext.set_color('black')
-#         autotext.set_fontsize(11)
-#         autotext.set_ha('center')
-#         autotext.set_va('center')
-        
-#     ax.set_title("연령대별 생존 비율")
-    
-#     # legend_labels = [str(label) for label in labels]
-#     legend_handles = [Patch(facecolor=col, label=label) for col, label in zip(colors, labels)]
-#     ax.legend(
-#         handles=legend_handles,
-#         title="나이 그룹",
-#         loc="center left",
-#         bbox_to_anchor=(1.15, 0.5),
-#         fontsize=10,
-#         title_fontsize=11
-#     )
-
-#     return fig
 
 def plot_survival_vs_death_pie(train):
     train = train[train['Age'].notna()]
@@ -239,3 +164,49 @@ def searchable_dataframe(df, name="데이터"):
         st.dataframe(filtered, use_container_width=True)
     else:
         st.info("🔎 필터 옵션을 선택하고 검색어를 입력하면 결과가 표시됩니다.")
+        
+def survival_by_ticket(df, top_n=10):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from matplotlib.patches import Patch
+
+    ticket_counts = (
+        df.groupby(['Ticket', 'Survived'])
+        .size()
+        .reset_index(name='Count')
+    )
+
+    top_tickets = (
+        df['Ticket'].value_counts()
+        .head(top_n)
+        .index
+    )
+
+    ticket_counts = ticket_counts[ticket_counts['Ticket'].isin(top_tickets)]
+
+    palette = {0: "#FF6B6B", 1: "#4ECDC4"}  # 0: Red (Death), 1: Teal (Survive)
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.barplot(
+        data=ticket_counts,
+        x='Ticket',
+        y='Count',
+        hue='Survived',
+        hue_order=[0, 1],
+        palette=palette,
+        ax=ax
+    )
+
+    ax.set_title(f"Top {top_n} 티켓별 생존/사망 비교")
+    ax.set_xlabel("Ticket")
+    ax.set_ylabel("인원 수")
+    plt.xticks(rotation=45)
+
+    # Custom legend
+    legend_elements = [
+        Patch(facecolor=palette[0], label='사망 '),
+        Patch(facecolor=palette[1], label='생존 ')
+    ]
+    ax.legend(handles=legend_elements, title="생존 여부")
+
+    return fig

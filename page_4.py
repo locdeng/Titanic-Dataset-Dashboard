@@ -3,7 +3,7 @@ import pandas as pd
 from utils.visualize import searchable_dataframe
 
 def show_data():
-    
+    st.title("원본 데이터 보기 및 검색")
     st.markdown(
     """
     이 대시보드는 타이타닉호 침몰 사건의 승객 데이터를 바탕으로 생존 여부를 분석하고, 단순한 예측 모델과 실제 데이터를 비교하여 인사이트를 얻는 데 목적이 있습니다.
@@ -19,8 +19,6 @@ def show_data():
     # 데이터 불러오기
     train = st.session_state.get("train")
     test = st.session_state.get("test")
-    # gender = st.session_state.get("gender")
-    # test_merged = st.session_state.get("test_merged")
 
     # 탭 생성
     tabs = st.tabs(["Train 데이터", "Test 데이터"])
