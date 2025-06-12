@@ -1,69 +1,80 @@
 import streamlit as st
-import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
-from utils.visualize import survival_by_gender, survival_by_age
+import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import LabelEncoder
+from utils.load_data import load_data  
 
 
-def gender_based_accuracy(train_df):
-    predicted = train_df["Sex"].apply(lambda x: 1 if x == "female" else 0)
-    actual = train_df["Survived"]
-    correct = (predicted == actual).sum()
-    accuracy = correct / len(train_df) * 100
-    return accuracy
+def show_model_prediction():
+    st.title("🚢 타이타닉 생존자 예측")
+
+    train, test = load_data()
+
+    with st.spinner("🔄 데이터 전처리 및 모델 학습 중..."):
+        st.sidebar.header("🔍 특성 탐색 (Feature Exploration)")
+        show_raw = st.sidebar.checkbox("📂 원본 데이터 보기", value=False)
+        if show_raw:
+            st.subheader("📄 학습 데이터 미리보기")
+            st.dataframe(train.head(10))
+
+        # test set에 가짜 Survived 추가해서 병합
+        test['Survived'] = -1
+        combined = pd.concat([train, test], sort=False)
+
+        # 문자열 열 인코딩
+        cat_cols = ['Sex', 'Embarked', 'Ticket', 'Cabin', 'Name']
+        for col in cat_cols:
+            combined[col] = combined[col].astype(str)
+            le = LabelEncoder()
+            combined[col] = le.fit_transform(combined[col])
+
+        # 결측값 처리
+        combined['Age'].fillna(combined['Age'].median(), inplace=True)
+        combined['Fare'].fillna(combined['Fare'].median(), inplace=True)
+        combined['Embarked'].fillna(combined['Embarked'].mode()[0], inplace=True)
+
+        # 다시 train / test 분리
+        train_processed = combined[combined['Survived'] != -1]
+        test_processed = combined[combined['Survived'] == -1]
+
+        X = train_processed.drop(['Survived', 'PassengerId'], axis=1)
+        y = train_processed['Survived']
+        X_test_final = test_processed.drop(['Survived', 'PassengerId'], axis=1)
+
+        # 학습/검증 데이터 분리
+        X_train, X_val, y_train, y_val = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+
+        # 랜덤 포레스트 모델 학습
+        model = RandomForestClassifier(n_estimators=100, random_state=42)
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_val)
+
+        # 성능 평가
+        st.subheader("📊 모델 성능 평가")
+        acc = accuracy_score(y_val, y_pred)
+        st.write(f"**정확도 (Accuracy)**: `{acc:.2f}`")
+
+        st.text("분류 리포트 (Classification Report):")
+        st.text(classification_report(y_val, y_pred))
+
+        # 특성 중요도 시각화
+        st.subheader("🌲 랜덤 포레스트 특성 중요도")
+        feat_imp = pd.Series(model.feature_importances_, index=X.columns).sort_values(ascending=False)
+        st.bar_chart(feat_imp)
+
+        # 테스트 세트 예측
+        st.subheader("📤 테스트 데이터 생존 예측 결과")
+        test_processed['Survived'] = model.predict(X_test_final)
+        result = test_processed.drop(columns=['Survived']).copy()
+        result.insert(1, 'Survived', test_processed['Survived'])  # insert Survived sau PassengerId
+        st.dataframe(result)
 
 
-def show_comparison():
-    st.title("📊 실제 vs 예측 생존 결과 비교")
 
-    train = st.session_state.get("train")
-    test = st.session_state.get("test")
-    test_merged = st.session_state.get("test_merged")
 
-    if train is None or test_merged is None:
-        st.warning("데이터를 불러올 수 없습니다. main.py에서 세션 상태를 확인하세요.")
-        return
-
-    st.markdown("""
-    이 페이지에서는 Train 데이터와 Test + Gender Submission 데이터를 비교하여
-    예측 결과와 실제 생존 데이터 간의 차이를 분석합니다.
-    """)
-
-    # 1. 성별 분포 비교
-    st.subheader("👥 성별 분포 비교")
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.markdown("**Train 데이터**")
-        fig = survival_by_gender(train, title="Train: 성별 생존/사망")
-        st.pyplot(fig)
-
-    with col2:
-        st.markdown("**Test + Gender 데이터 (예측)**")
-        fig = survival_by_gender(test_merged, title="Test: 성별 예측 결과")
-        st.pyplot(fig)
-
-    # 2. 연령 분포 비교
-    st.subheader("🎂 나이 분포 비교")
-    col3, col4 = st.columns(2)
-
-    with col3:
-        st.markdown("**Train 데이터 생존자 연령 분포**")
-        fig = survival_by_age(train, survived=True)
-        st.pyplot(fig)
-
-    with col4:
-        st.markdown("**Test 데이터 예측 생존자 연령 분포**")
-        fig = survival_by_age(test_merged, survived=True)
-        st.pyplot(fig)
-
-    # 3. 성별 기반 예측 정확도 평가
-    st.subheader("✅ 성별 기반 예측 정확도 (Train 데이터)")
-    accuracy = gender_based_accuracy(train)
-    st.metric("예측 정확도", f"{accuracy:.2f}%")
-
-    st.markdown(f"""
-    - 이 분석은 gender_submission.csv 방식인
-      \"여성은 생존, 남성은 사망\" 규칙을 Train 데이터에 적용한 것입니다.
-    - 이 단순 규칙으로 Train 데이터에서 약 **{accuracy:.2f}%** 의 정확도를 얻을 수 있습니다.
-    - 실제 성별 외 다른 요인도 생존에 영향을 주기 때문에 한계가 존재합니다.
-    """)

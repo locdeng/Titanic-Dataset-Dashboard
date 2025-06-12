@@ -27,7 +27,7 @@ def survival_by_age(df, survived = True, age_range=(0,80)):
     sns.kdeplot(subset["Age"], ax=ax, fill=True,color="Steelblue")
     ax.set_title(title)
     ax.set_xlabel("나이")
-    ax.set_ylabel("Percentage of Density")
+    ax.set_ylabel("빈도도")
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=1))
     return fig
 
@@ -44,9 +44,9 @@ def compare_actual_vs_predicted(train_df, test_df):
     fig, ax = plt.subplots(figsize=(9, 5))
     sns.countplot(data=combined, x='Sex', hue='Survived', palette='Set2', ax=ax)
     ax.set_title("Actual vs Predicted Survival by Gender")
-    ax.set_xlabel("Sex")
-    ax.set_ylabel("Number of People")
-    ax.legend(title='Survial Status', labels=['Death', 'Survived'])
+    ax.set_xlabel("서별")
+    ax.set_ylabel("인원 수")
+    ax.legend(title='Survial Status', labels=['사망', '생존존'])
     return fig
     
 # def plot_survival_rate_by_age(df, min_samples=5):
@@ -208,7 +208,7 @@ def histogram_by_age_percent(df, survived=True, age_range=(0, 80)):
     )
 
     ax.set_title(title)
-    ax.set_xlabel("Age")
+    ax.set_xlabel("나이")
     ax.set_ylabel("Percentage (%)")
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=100, decimals=1))
     ax.set_ylim(0, max(counts) + 5)
