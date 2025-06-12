@@ -5,6 +5,7 @@ from utils.merge_data import merge_test, train_label
 from page_1 import show_overview
 from page_2 import analysis_home
 from pape_3 import show_comparison
+from page_4 import show_data
 
 
 def main():
@@ -25,7 +26,7 @@ def main():
     with st.sidebar:
         selected = option_menu(
             menu_title="대시보드 메뉴",
-            options=["데이터 개요", "생존 분석", "실제 vs 예측"],
+            options=["데이터 개요", "생존 분석", "실제 vs 예측", "데이터 보기"],
             icons=["table", "bar-chart", "activity"],
             default_index=0
         )
@@ -37,6 +38,8 @@ def main():
         analysis_home()
     elif selected == "실제 vs 예측":
         show_comparison()
+    elif selected == "데이터 보기":
+        show_data()
         
 if __name__ == "__main__":
     main()

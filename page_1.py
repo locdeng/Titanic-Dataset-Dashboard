@@ -1,44 +1,49 @@
-import streamlit as st 
-import pandas as pd
+import streamlit as st
 
-def show_overview():
-    st.header('프로젝트 개요')
+def show_overview(): 
+    st.subheader("데이터 개요")
 
-    st.markdown(
-    """
-    이 대시보드는 타이타닉호 침몰 사건의 승객 데이터를 바탕으로 생존 여부를 분석하고, 단순한 예측 모델과 실제 데이터를 비교하여 인사이트를 얻는 데 목적이 있습니다.
-
-    왼쪽 사이드바의 메뉴를 통해 분석 항목을 선택할 수 있습니다. 
-
-    `train.csv`에는 실제 생존 여부가 포함되어 있으며, `test.csv`는 생존 여부가 없는 테스트 데이터입니다. 
-    `gender_submission.csv`는 단순한 규칙(여성 생존, 남성 사망)에 기반한 예측값을 포함하고 있습니다.
-
-    이 페이지에서는 원본 데이터와 병합된 예측 데이터를 미리 확인할 수 있습니다.
-    
-    왼쪽 사이드바의 메뉴를 통해 분석 항목을 선택할 수 있습니다. 
-    """
-    )
-
-    # 데이터 불러오기
     train = st.session_state.get("train")
-    test = st.session_state.get("test")
-    gender = st.session_state.get("gender")
-    test_merged = st.session_state.get("test_merged")
 
-    # 탭 생성
-    tabs = st.tabs(["Train 데이터", "Test 데이터","Gender_Submission 데이터터", " Test + Gender_Submission 데이터"])
-
-    with tabs[0]:
-        # st.subheader("🚂 Train (Actual) 데이터")
-        st.dataframe(train)
+    if train is None:
+        st.warning("Train 데이터를 불러올 수 없습니다. main.py에서 세션 상태를 확인하세요.")
     
-    with tabs[1]:
-        st.dataframe(test)
-        
-    with tabs[2]:
-        st.dataframe(gender)
 
-    with tabs[3]:
-        # st.subheader("🔮 Test (Predicted) 데이터")
-        st.dataframe(test_merged)
+    st.markdown("""
+        이 페이지는 Titanic 생존자 예측을 위한 학습 데이터(train.csv)의 전체적인 통계를 제공합니다.
+        아래는 데이터의 주요 통계 지표입니다.
+    """)
+
+    # 총 인원 수
+    total_passengers = len(train)
+    total_survived = train['Survived'].sum()
+    total_dead = total_passengers - total_survived
+
+    # 나이 범위
+    min_age = train['Age'].min()
+    max_age = train['Age'].max()
+
+    # 생존률
+    survival_rate = total_survived / total_passengers * 100
+
+    # 성별 분포
+    sex_counts = train['Sex'].value_counts()
+
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("총 승객 수", f"{total_passengers} 명")
+        st.metric("생존자 수", f"{total_survived} 명")
+        st.metric("사망자 수", f"{total_dead} 명")
+        st.metric("생존률", f"{survival_rate:.2f}%")
+
+    with col2:
+        st.metric("최소 나이", f"{min_age} 세")
+        st.metric("최대 나이", f"{max_age} 세")
+        st.markdown("**성별 분포:**")
+        for sex, count in sex_counts.items():
+            st.write(f"{sex.capitalize()}: {count} 명")
+
+# st.divider()
+# st.markdown("### 🧾 데이터 샘플")
+# st.dataframe(train.head(20))
 
