@@ -5,8 +5,14 @@ import pandas as pd
 import numpy as np
 from matplotlib.patches import Patch
 import streamlit as st 
+import matplotlib.font_manager as fm
 
-plt.rcParams['font.family'] = 'Malgun Gothic'
+font_path = r"font/Malgun Gothic Regular.ttf"  
+fm.fontManager.addfont(font_path)  
+
+font_prop = fm.FontProperties(fname=font_path)
+plt.rcParams['font.family'] = font_prop.get_name() 
+plt.rcParams['axes.unicode_minus'] = False
 
 def survival_by_gender(df, title="Survival by Gender"):
     fig, ax = plt.subplots(figsize=(8, 5))
