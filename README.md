@@ -29,7 +29,7 @@ This personal project focuses on exploring the Titanic dataset to uncover patter
 
 ## 🌐 Live Demo
 
-You can interact with the deployed dashboard [here]([https://github.com/locdeng/Titanic-Dataset-Dashboard])
+You can interact with the deployed dashboard [here](https://github.com/locdeng/Titanic-Dataset-Dashboard)
 
 ## 📚 Dataset
 The Titanic dataset is sourced from the Kaggle Titanic Competition.
