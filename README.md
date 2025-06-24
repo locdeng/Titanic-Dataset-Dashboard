@@ -22,6 +22,45 @@ This personal project focuses on exploring the Titanic dataset to uncover patter
 - **Dashboard Framework:** Streamlit
 - **Model:** Random Forest Classifier
 
+## 📁 Project Structure
+
+├── dataset/
+
+├── font/
+
+├── utils/
+
+│ ├── init.py
+
+│ ├── load_data.py Load and preprocess datasets.
+
+│ ├── merge_data.py C
+
+│ ├── visualize.py Contain functions ussed in pages
+
+├── main.py
+
+├── page_1.py Overview of statistical summaries from the training dataset.
+
+├── page_2.py Visualizations of survival/death patterns by gender, age, and ticket.
+
+├── page_3.py Build and train a Random Forest model to predict passenger survival on test dataset.
+
+├── page_4.py Display and search merged original and predicted data.
+
+├── requirements.txt
+
+├── README.md
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies
+
+pip install -r requirements.txt
+
+### 2. Run 
+streamlit run main.py
+
 ## 📊 Model Performance
 
 - **Accuracy:** 81%
