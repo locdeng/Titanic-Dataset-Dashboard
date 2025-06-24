@@ -60,7 +60,9 @@ pip install -r requirements.txt
 ```
 
 ### 2. Run 
+```bash
 streamlit run main.py
+```
 
 ## 📊 Model Performance
 
