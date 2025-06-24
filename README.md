@@ -36,7 +36,7 @@ This personal project focuses on exploring the Titanic dataset to uncover patter
 
 │ ├── merge_data.py C --> Unnecessary
 
-│ ├── visualize.py -> Contain graph-drawing functions used in pages
+│ ├── visualize.py --> Contain graph-drawing functions used in pages
 
 ├── main.py
 
