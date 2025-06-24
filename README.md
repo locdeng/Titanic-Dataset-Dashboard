@@ -55,8 +55,9 @@ This personal project focuses on exploring the Titanic dataset to uncover patter
 ## 🚀 Getting Started
 
 ### 1. Install Dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
 ### 2. Run 
 streamlit run main.py
