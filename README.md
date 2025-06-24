@@ -40,13 +40,13 @@ This personal project focuses on exploring the Titanic dataset to uncover patter
 
 ├── main.py
 
-├── page_1.py Overview of statistical summaries from the training dataset.
+├── page_1.py   Overview of statistical summaries from the training dataset.
 
-├── page_2.py Visualizations of survival/death patterns by gender, age, and ticket.
+├── page_2.py   Visualizations of survival/death patterns by gender, age, and ticket.
 
-├── page_3.py Build and train a Random Forest model to predict passenger survival on test dataset.
+├── page_3.py   Build and train a Random Forest model to predict passenger survival on test dataset.
 
-├── page_4.py Display and search merged original and predicted data.
+├── page_4.py   Display and search original and predicted data.
 
 ├── requirements.txt
 
