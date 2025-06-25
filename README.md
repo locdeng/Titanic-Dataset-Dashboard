@@ -71,7 +71,7 @@ streamlit run main.py
 
 ## 🌐 Live Demo
 
-You can interact with the deployed dashboard [here](https://github.com/locdeng/Titanic-Dataset-Dashboard)
+You can interact with the deployed dashboard [here](https://titanic-dataset-dashboard-dangxuanloc-17.streamlit.app/)
 
 ## 📚 Dataset
 The Titanic dataset is sourced from the Kaggle Titanic Competition.
